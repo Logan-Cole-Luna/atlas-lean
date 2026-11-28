@@ -9,7 +9,7 @@ Knowing the low $t$ bits $s'$ of $s_i$, the quantity $2^{w-1-t}(s_i - s') + e'$ 
 ## Depends on
 
 - [The binary gadget vector and gadget matrix](gadget-matrix.md)
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
+- [Search LWE experiment](../../hardness-assumptions/lwe-search-game.md)
 
 ## Proof depends on
 

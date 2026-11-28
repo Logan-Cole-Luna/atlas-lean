@@ -9,7 +9,8 @@ Start with samples from $D_{\Lambda,r}$ for very large $r$, which are easy to ge
 ## Depends on
 
 - [Approximate lattice problems GapSVP and SIVP](gapsvp-and-sivp.md)
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
+- [Decision learning-with-errors assumption](../../hardness-assumptions/learning-with-errors.md)
+- [Search LWE experiment](../../hardness-assumptions/lwe-search-game.md)
 
 ## Proof depends on
 

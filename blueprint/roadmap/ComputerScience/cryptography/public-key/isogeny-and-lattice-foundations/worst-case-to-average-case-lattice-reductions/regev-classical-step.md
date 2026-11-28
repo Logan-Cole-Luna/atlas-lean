@@ -10,7 +10,7 @@ Given a BDD target $x=y+e$ with $y\in\Lambda^{*}$, map each Gaussian sample $v\i
 
 - [Bounded distance decoding](bounded-distance-decoding.md)
 - [Discrete Gaussian sampling problem](discrete-gaussian-sampling-problem.md)
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
+- [Search LWE experiment](../../hardness-assumptions/lwe-search-game.md)
 
 ## Sources
 

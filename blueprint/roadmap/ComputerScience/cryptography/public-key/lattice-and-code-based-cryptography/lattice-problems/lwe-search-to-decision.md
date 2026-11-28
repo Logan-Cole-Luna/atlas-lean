@@ -8,7 +8,8 @@ The transformation preserves the uniform law of $A$ and turns the error into $e 
 
 ## Depends on
 
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
+- [Decision learning-with-errors assumption](../../hardness-assumptions/learning-with-errors.md)
+- [Search LWE experiment](../../hardness-assumptions/lwe-search-game.md)
 
 ## Proof depends on
 

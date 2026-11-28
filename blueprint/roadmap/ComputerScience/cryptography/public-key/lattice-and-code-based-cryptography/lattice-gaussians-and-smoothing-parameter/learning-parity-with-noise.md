@@ -4,7 +4,8 @@ For dimension $n$ and noise rate $\tau \in (0, 1/2)$, the *learning parity with 
 
 ## Depends on
 
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
+- [Decision learning-with-errors assumption](../../hardness-assumptions/learning-with-errors.md)
+- [Search LWE experiment](../../hardness-assumptions/lwe-search-game.md)
 
 ## Sources
 

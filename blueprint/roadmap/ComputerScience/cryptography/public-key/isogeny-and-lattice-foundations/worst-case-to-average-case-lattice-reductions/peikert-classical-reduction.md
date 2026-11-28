@@ -9,7 +9,7 @@ Replace the quantum step by a classical one that works only for the decisional p
 ## Depends on
 
 - [Approximate lattice problems GapSVP and SIVP](gapsvp-and-sivp.md)
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
+- [Search LWE experiment](../../hardness-assumptions/lwe-search-game.md)
 
 ## Proof depends on
 

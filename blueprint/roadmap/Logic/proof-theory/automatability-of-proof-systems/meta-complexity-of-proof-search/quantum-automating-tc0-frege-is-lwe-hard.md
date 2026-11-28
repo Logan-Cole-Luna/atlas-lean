@@ -13,7 +13,7 @@ The quantum version of Impagliazzo's observation says that a quantum automatable
 ## Depends on
 
 - [Automatable proof systems](../automatable-proof-system.md)
-- [Learning with errors](../../../../ComputerScience/cryptography/public-key/hardness-assumptions/learning-with-errors.md)
+- [Search LWE advantage](../../../../ComputerScience/cryptography/public-key/hardness-assumptions/lwe-search-advantage.md)
 
 ## Proof depends on
 

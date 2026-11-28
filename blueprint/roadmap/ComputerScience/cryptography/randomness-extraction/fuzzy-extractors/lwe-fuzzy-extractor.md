@@ -9,7 +9,8 @@ The helper is an LWE sample with the reading as error. Hybrid: replace $As_{k+1.
 ## Depends on
 
 - [Fuzzy extractor and secure sketch](fuzzy-extractor.md)
-- [Learning with errors](../../public-key/hardness-assumptions/learning-with-errors.md)
+- [Decision learning-with-errors assumption](../../public-key/hardness-assumptions/learning-with-errors.md)
+- [Search LWE experiment](../../public-key/hardness-assumptions/lwe-search-game.md)
 
 ## Sources
 

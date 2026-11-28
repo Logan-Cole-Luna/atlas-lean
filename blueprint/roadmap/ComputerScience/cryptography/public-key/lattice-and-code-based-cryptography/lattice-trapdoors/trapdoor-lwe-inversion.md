@@ -9,7 +9,7 @@ Multiplying by the trapdoor transform turns an LWE sample for $A$ into a gadget 
 ## Depends on
 
 - [Micciancio–Peikert $G$-trapdoors and tagged parity-check matrices](micciancio-peikert-trapdoor.md)
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
+- [Search LWE experiment](../../hardness-assumptions/lwe-search-game.md)
 
 ## Proof depends on
 

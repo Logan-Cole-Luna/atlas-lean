@@ -8,7 +8,8 @@ Conditioned on $A_1$ invertible, $(A_1, A')$ is uniform on invertible matrices t
 
 ## Depends on
 
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
+- [Decision learning-with-errors assumption](../../hardness-assumptions/learning-with-errors.md)
+- [Search LWE advantage](../../hardness-assumptions/lwe-search-advantage.md)
 - [Distinguishing advantage](../../../security-games/games-and-advantages/advantage.md)
 
 ## Proof depends on

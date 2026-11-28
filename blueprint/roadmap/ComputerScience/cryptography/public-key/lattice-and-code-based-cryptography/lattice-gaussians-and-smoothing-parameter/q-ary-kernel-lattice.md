@@ -4,7 +4,6 @@ For a matrix $A \in \mathbb{Z}_q^{n \times m}$, the *$q$-ary kernel lattice* is 
 
 ## Depends on
 
-- [Learning with errors](../../hardness-assumptions/learning-with-errors.md)
 - [Shortest vector, independent vectors and guaranteed distance decoding problems](svp-sivp-givp-and-gdd.md)
 
 ## Sources
