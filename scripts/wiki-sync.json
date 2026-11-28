@@ -23815,7 +23815,7 @@
 "Cslib.Crypto.PublicKey.Assumptions.lweErrors": "a92b24f7ba4f4458",
 "Cslib.Crypto.PublicKey.Assumptions.lweRand": "c84ba619d5687f29",
 "Cslib.Crypto.PublicKey.Assumptions.lweReal": "a5ae2eb65942b765",
-"Cslib.Crypto.PublicKey.Assumptions.lweSearchAdvantage": "ac366702a28787a1",
+"Cslib.Crypto.PublicKey.Assumptions.lweSearchAdvantage": "47b33f61b9dcc5f6",
 "Cslib.Crypto.PublicKey.Assumptions.lweSearchGame": "1686da088bdd3c57",
 "Cslib.Crypto.PublicKey.Assumptions.mul_inv_val_modEq": "0b401a4fc847e8c0",
 "Cslib.Crypto.PublicKey.Assumptions.pow_inv_val_pow": "3060456c6af5cd5d",
