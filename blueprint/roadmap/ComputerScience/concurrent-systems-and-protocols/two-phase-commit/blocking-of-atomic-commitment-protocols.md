@@ -6,6 +6,10 @@ A process running an atomic commitment protocol (see [Atomic commitment and bloc
 
 **Proposition 2.** No atomic commitment protocol can guarantee independent recovery of failed processes.
 
+## Depends on
+
+- [Atomic commitment and blocking of two-phase commit](atomic-commitment-and-blocking-of-two-phase.md)
+
 ## Expansion
 
 The source states both propositions without a model or a proof. A good expansion adds a model of atomic commitment protocols in which processes exchange messages, crash, recover from stable storage and lose messages, defines blocking and independent recovery in it, adds a page defining the specification AC-1 to AC-5 for such protocols, and states each proposition on a page of its own.

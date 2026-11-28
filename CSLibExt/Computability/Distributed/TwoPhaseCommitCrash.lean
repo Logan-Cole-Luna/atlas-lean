@@ -23,10 +23,11 @@ each process; each process keeps its state in its log on stable storage. `CrashS
 process crash and recover, following the recovery rules of the log, lets the coordinator and a
 participant that has not voted abort on a timeout, and lets an uncertain participant ask another
 participant for the decision (cooperative termination). Protocol steps are those of `Step`,
-taken by operational processes, except that the coordinator aborts without a timeout only when
-some participant has aborted. Messages are abstracted into guards on the global state, as in the
-failure-free model; a participant learns the decision from the coordinator only while the
-coordinator is operational, so a crash loses the decision messages the coordinator has not
+taken by operational processes, except that the coordinator's protocol step `decideAbort`
+requires, in addition, some participant to have aborted; a waiting coordinator can abort without
+one on a timeout or when it recovers. Messages are abstracted into guards on the global state,
+as in the failure-free model; a participant learns the decision from the coordinator only while
+the coordinator is operational, so a crash loses the decision messages the coordinator has not
 delivered.
 
 * `atomic_commitment_and_blocking`: two-phase commit with crashes satisfies AC-1 to AC-4, and
@@ -235,8 +236,9 @@ private theorem crashStep_keeps {s t : CrashState P} {a : CrashAction P} (h : Cr
   | learnCommit p _ _ _ h | learnAbort p _ _ _ h | askCommit p _ _ _ h | askAbort p _ _ _ h =>
       exact ⟨id, id, fun q => setPart_keeps _ _ q _ (by rintro (h' | h') <;> simp_all)⟩
 
-/-- A protocol step other than a no vote aborts nothing that was not aborted and keeps every
-process operational. -/
+/-- From a state in which every process is operational and none has aborted, a protocol step
+other than a no vote leads to a state in which every process is operational and none has
+aborted. -/
 private theorem crashStep_no_abort {s t : CrashState P} {b : Action P}
     (h : CrashStep s (.protocol b) t) (hb : ∀ p, b ≠ .voteNo p)
     (hs : s.coord ≠ .aborted ∧ (∀ p, s.part p ≠ .aborted) ∧ s.coordUp ∧ ∀ p, s.up p) :
@@ -259,8 +261,8 @@ private theorem crashStep_no_abort {s t : CrashState P} {b : Action P}
   | learnCommit q => exact ⟨hc, upd q _ (by simp), hu⟩
   | learnAbort _ _ _ hc' => exact absurd hc' hc
 
-/-- A state reached by a failure-free run without no votes has no abort, and every process in it
-is operational. -/
+/-- A state reached from `crashInitial` by a failure-free run without no votes has no abort, and
+every process in it is operational. -/
 private theorem no_abort_of_failureFree {as : List (CrashAction P)} {s : CrashState P}
     (hm : (crashLts (P := P)).MTr crashInitial as s)
     (hn : ∀ a ∈ as, ∃ b, a = .protocol b ∧ ∀ p, b ≠ .voteNo p) :
@@ -295,8 +297,8 @@ yes.
    can be taken there, the coordinator and every participant have committed.
 5. (Blocking) From every state in which every participant is prepared, that is, voted yes and
    is uncertain of the decision, and the coordinator has crashed, every finite run in which the
-   coordinator does not recover keeps every participant prepared, although operational
-   participants may still ask each other for the decision.
+   coordinator does not recover keeps every participant prepared; no exchange with another
+   prepared participant yields a decision, and unanswered requests are not represented as steps.
 
 (L. Alvisi, *Atomic Commit*, lecture notes, CS 371D, University of Texas at Austin, Fall 2008:
 "AC Specification", "Notes on 2PC" and "2PC and blocking".) -/

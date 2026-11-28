@@ -8,7 +8,7 @@ The pre-commit buffer state guarantees that the global state never contains both
 
 ## Depends on
 
-- [Atomic commitment and blocking of two-phase commit](../atomic-commitment-and-blocking-of-two-phase.md)
+- [Blocking of atomic commitment protocols](../blocking-of-atomic-commitment-protocols.md)
 - [Two-phase commit blocks: uncertain survivors cannot terminate safely](two-phase-commit-blocks-uncertain-survivors-cannot-terminate-safely.md)
 
 ## Sources
