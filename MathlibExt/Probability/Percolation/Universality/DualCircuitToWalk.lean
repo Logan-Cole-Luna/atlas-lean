@@ -169,7 +169,7 @@ def dcw_BarrierRoute (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ) : Prop :=
 /-- A barrier route gives a vertical crossing of `rect 0 n 0 n` in `dualConfig ω`. -/
 theorem dcw_dualVerticalCrossing_of_route (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ)
     (hroute : dcw_BarrierRoute ω n) :
-    DualVerticalCrossing ω 0 n 0 n := by
+    VerticalCrossing (dualConfig ω) 0 n 0 n := by
   obtain ⟨p₀, hp₀, q₀, hq₀, c, hsupp⟩ := hroute
   set c' : (openSubgraph 2 (dualConfig ω)).Walk p₀ q₀ := dcw_dualBarrier_walk_open ω n c with hc'
   have hsupp' : c'.support = c.support := by

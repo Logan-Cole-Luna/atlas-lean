@@ -223,9 +223,8 @@ theorem dcp_barrierWalk_support_rot (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ)
 `rect (-n) 0 0 n` in `dualConfig ω`. -/
 theorem dcp_rotatedDualVerticalCrossing_of_cutConnectsRot
     (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ) (hcut : dcp_DualCutConnectsRot ω n) :
-    DualVerticalCrossing ω (-n) 0 0 n := by
+    VerticalCrossing (dualConfig ω) (-n) 0 0 n := by
   obtain ⟨p₀, hp₀, q₀, hq₀, hreach⟩ := hcut
-  rw [dualVerticalCrossing_iff]
   obtain ⟨c⟩ := hreach
   set c' : (openSubgraph 2 (dualConfig ω)).Walk p₀ q₀ := dcw_dualBarrier_walk_open ω n c
     with hc'

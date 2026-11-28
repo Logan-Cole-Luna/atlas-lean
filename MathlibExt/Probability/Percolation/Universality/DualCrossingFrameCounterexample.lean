@@ -20,7 +20,8 @@ the explicit wall configuration `bcc_wallCfg` (the three horizontal edges betwee
 `1` of the box `[0, 2]²` are closed, all other edges open), that two natural vertex-indexed
 candidates are *not* implied by the absence of a horizontal crossing:
 
-* `DualVerticalCrossing ω 0 2 0 2`, a vertical open crossing of `dualConfig ω` in the same box;
+* `VerticalCrossing (dualConfig ω) 0 2 0 2`, a vertical open crossing of `dualConfig ω` in the
+  same box;
 * `dcp_DualCutConnectsRot ω 2`, bottom-to-top reachability in the quarter-turned barrier graph
   `dcw_dualBarrierGraph` of `DualCutToPath`.
 
@@ -29,7 +30,8 @@ The correct face-indexed event is `pmd_FaceDualVCrossing`; on the same configura
 
 ## Main results
 
-* `rdv_box_frame_target_false`: `¬ (∀ ω, ¬ H(ω, [0,2]²) → DualVerticalCrossing ω 0 2 0 2)`.
+* `rdv_box_frame_target_false`:
+  `¬ (∀ ω, ¬ H(ω, [0,2]²) → VerticalCrossing (dualConfig ω) 0 2 0 2)`.
 * `rdv_rotResidue_false_on_noH`: `¬ dcp_DualCutConnectsRot bcc_wallCfg 2`, although
   `bcc_wallCfg` has no horizontal crossing of `[0, 2]²`.
 -/
@@ -44,12 +46,13 @@ namespace StatMech
 
 namespace Universality
 
-/-- The vertex-frame implication `¬ HorizontalCrossing → DualVerticalCrossing` on the box
-`[0, 2]²` is false: the wall configuration `bcc_wallCfg` is a counterexample.
+/-- The vertex-frame implication from `¬ HorizontalCrossing ω` to
+`VerticalCrossing (dualConfig ω)` on the box `[0, 2]²` is false: the wall configuration
+`bcc_wallCfg` is a counterexample.
 See also `bcc_dichotomy_false`, the same statement phrased as a non-inclusion of events. -/
 theorem rdv_box_frame_target_false :
     ¬ (∀ ω : ConfigSpace (Sym2 (Site 2)),
-        ¬ HorizontalCrossing ω 0 2 0 2 → DualVerticalCrossing ω 0 2 0 2) := by
+        ¬ HorizontalCrossing ω 0 2 0 2 → VerticalCrossing (dualConfig ω) 0 2 0 2) := by
   intro h
   exact bcc_noV_wall (h bcc_wallCfg bcc_noH_wall)
 
@@ -102,11 +105,11 @@ theorem rdv_rotResidue_false_on_noH : ¬ dcp_DualCutConnectsRot bcc_wallCfg 2 :=
   rw [hq2] at hend; norm_num at hend
 
 /-- On the wall configuration there is no horizontal crossing of `[0, 2]²`, and neither
-vertex-frame dual event (`DualVerticalCrossing ω 0 2 0 2`, nor
+vertex-frame dual event (`VerticalCrossing (dualConfig ω) 0 2 0 2`, nor
 `dcp_DualCutConnectsRot`) holds. -/
 theorem rdv_both_targets_false_on_witness :
     ¬ HorizontalCrossing bcc_wallCfg 0 2 0 2 ∧
-      ¬ DualVerticalCrossing bcc_wallCfg 0 2 0 2 ∧
+      ¬ VerticalCrossing (dualConfig bcc_wallCfg) 0 2 0 2 ∧
       ¬ dcp_DualCutConnectsRot bcc_wallCfg 2 :=
   ⟨bcc_noH_wall, bcc_noV_wall, rdv_rotResidue_false_on_noH⟩
 

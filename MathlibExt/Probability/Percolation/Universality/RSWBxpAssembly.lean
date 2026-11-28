@@ -22,9 +22,9 @@ Building blocks for Russo–Seymour–Welsh arguments on `ℤ²` for a positivel
 * gluing: `μ(H[a, m']) μ(V[m, m']) μ(H[m, b]) ≤ μ(H[a, b])` for horizontal crossings `H` and the
   vertical crossing `V` of the overlap (`StatMech.Lattice.jec_rsw_strip_glue`), iterated once;
 * the square-root trick for two equiprobable increasing events;
-* at `p = 1/2`, dual crossings (bottom–top in `dualConfig`, left–right on the shifted dual
-  lattice) have the same law as primal crossings, and a uniform lower bound on crossings of
-  `ρn × n` rectangles gives the box-crossing property.
+* at `p = 1/2`, the left–right and bottom–top crossings on the shifted dual lattice have the
+  same law as the primal crossings, and a uniform lower bound on crossings of `ρn × n`
+  rectangles gives the box-crossing property.
 
 The self-duality bound that derived `ℙ_{1/2}(H) ≥ 1/2` for a square from a separation hypothesis
 `hsep` was removed: `hsep` is not planar duality and is false for `[0, 2]²`, so the bound had no
@@ -146,17 +146,32 @@ theorem rba_sqrt_square_seed
         ≤ Real.sqrt (1 - s) := Real.sqrt_le_sqrt (by linarith)
   linarith
 
-/-- Under `ℙ_{1/2}` the `dualConfig` bottom–top crossing has the probability of the primal one. -/
+private theorem openSubgraphInduce_faceDualConfig_adj (ω : ConfigSpace (Sym2 (Site 2)))
+    (a b c d : ℤ) :
+    (openSubgraphInduce 2 (fci_faceDualConfig ω) (rect a b c d)).Adj =
+      fun f g : rect a b c d => dualLattice.Adj f g ∧ ω (sharedPrimalEdge f g) = false := by
+  funext f g
+  refine propext ?_
+  change _ ↔ (hypercubicLattice 2).Adj f g ∧ ω (sharedPrimalEdge f g) = false
+  rw [openSubgraphInduce_adj, ← fci_faceOpenDual_eq_openSubgraph, fci_faceOpenDual_adj]
+
+/-- Under `ℙ_{1/2}` the bottom–top crossing on the shifted dual lattice
+(`DualVerticalCrossing`: dual steps across closed primal edges) has the probability of the
+primal bottom–top crossing. -/
 theorem rba_dualVerticalCrossing_eq (a b c d : ℤ)
     (hmeasV : MeasurableSet (verticalCrossingEvent a b c d)) :
     halfMeasure.real (dualVerticalCrossingEvent a b c d)
       = halfMeasure.real (verticalCrossingEvent a b c d) := by
   have hpre : dualVerticalCrossingEvent a b c d
-      = dualConfig ⁻¹' verticalCrossingEvent a b c d := rfl
+      = fci_faceDualConfig ⁻¹' verticalCrossingEvent a b c d := by
+    ext ω
+    rw [Set.mem_preimage, mem_verticalCrossingEvent, mem_dualVerticalCrossingEvent,
+      dualVerticalCrossing_iff]
+    simp only [VerticalCrossing, ConnectedWithin, SimpleGraph.reachable_iff_reflTransGen,
+      openSubgraphInduce_faceDualConfig_adj]
   unfold halfMeasure
-  rw [hpre, Measure.real, ← Measure.map_apply measurable_dualConfig hmeasV,
-    bernoulliProductMeasure_selfDual_half]
-  rfl
+  rw [hpre, fci_faceDualConfig_measurePreserving.measureReal_preimage
+    hmeasV.nullMeasurableSet]
 
 /-- Under `ℙ_{1/2}` the left–right crossing on the shifted dual lattice
 (`DualHorizontalCrossing`: dual steps across closed primal edges) has the probability of the
@@ -168,16 +183,10 @@ theorem rba_dualHorizontalCrossing_eq (a b c d : ℤ)
   have hpre : dualHorizontalCrossingEvent a b c d
       = fci_faceDualConfig ⁻¹' horizontalCrossingEvent a b c d := by
     ext ω
-    have hsteps : (openSubgraphInduce 2 (fci_faceDualConfig ω) (rect a b c d)).Adj =
-        fun f g : rect a b c d => dualLattice.Adj f g ∧ ω (sharedPrimalEdge f g) = false := by
-      funext f g
-      refine propext ?_
-      change _ ↔ (hypercubicLattice 2).Adj f g ∧ ω (sharedPrimalEdge f g) = false
-      rw [openSubgraphInduce_adj, ← fci_faceOpenDual_eq_openSubgraph, fci_faceOpenDual_adj]
     rw [Set.mem_preimage, mem_horizontalCrossingEvent, mem_dualHorizontalCrossingEvent,
       dualHorizontalCrossing_iff]
     simp only [HorizontalCrossing, ConnectedWithin, SimpleGraph.reachable_iff_reflTransGen,
-      hsteps]
+      openSubgraphInduce_faceDualConfig_adj]
   unfold halfMeasure
   rw [hpre, fci_faceDualConfig_measurePreserving.measureReal_preimage
     hmeasH.nullMeasurableSet]

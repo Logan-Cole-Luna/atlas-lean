@@ -23,6 +23,10 @@ once `n ≥ 2`.
 It also sets up the dual analogue of the left-reach set: the sites joined to the bottom side by a
 path open in `dualConfig ω` inside the square, and its separation property.
 
+The statements name the rotated crossing explicitly, as `VerticalCrossing (dualConfig ω) …` or
+the preimage `dualConfig ⁻¹' verticalCrossingEvent …`. It is not the bottom–top crossing
+`DualVerticalCrossing` on the shifted dual lattice.
+
 ## Main definitions
 
 * `StatMech.Universality.bcc_wallCfg`: all edges open except the three horizontal edges between
@@ -160,7 +164,7 @@ theorem bcc_dualVwalk_keeps_snd {x y : (rect 0 2 0 2 : Set (Site 2))}
     exact ih (bcc_dualOpen_snd_le hab.2).2
 
 /-- `bcc_wallCfg` has no bottom–top crossing of `rect 0 2 0 2` in `dualConfig bcc_wallCfg`. -/
-theorem bcc_noV_wall : ¬ DualVerticalCrossing bcc_wallCfg 0 2 0 2 := by
+theorem bcc_noV_wall : ¬ VerticalCrossing (dualConfig bcc_wallCfg) 0 2 0 2 := by
   rintro ⟨x, y, hxy⟩
   have hx1 : (x : Site 2) 1 = 0 := x.2.2
   have hy1 : (y : Site 2) 1 = 2 := y.2.2
@@ -170,19 +174,20 @@ theorem bcc_noV_wall : ¬ DualVerticalCrossing bcc_wallCfg 0 2 0 2 := by
   norm_num at hinv
 
 theorem bcc_wall_noH_noV :
-    ¬ HorizontalCrossing bcc_wallCfg 0 2 0 2 ∧ ¬ DualVerticalCrossing bcc_wallCfg 0 2 0 2 :=
+    ¬ HorizontalCrossing bcc_wallCfg 0 2 0 2 ∧
+      ¬ VerticalCrossing (dualConfig bcc_wallCfg) 0 2 0 2 :=
   ⟨bcc_noH_wall, bcc_noV_wall⟩
 
 /-- The same-box dichotomy with the rotated dual is false: on `rect 0 2 0 2`, the absence of an
 open horizontal crossing does not imply a vertical crossing in `dualConfig ω`. The correct
 statement uses the geometric dual rectangle; see the module docstring. -/
 theorem bcc_dichotomy_false :
-    ¬ ((horizontalCrossingEvent 0 2 0 2)ᶜ ⊆ dualVerticalCrossingEvent 0 2 0 2) := by
+    ¬ ((horizontalCrossingEvent 0 2 0 2)ᶜ ⊆ dualConfig ⁻¹' verticalCrossingEvent 0 2 0 2) := by
   intro hsub
   have hmem : bcc_wallCfg ∈ (horizontalCrossingEvent 0 2 0 2)ᶜ := by
     rw [Set.mem_compl_iff, mem_horizontalCrossingEvent]; exact bcc_noH_wall
-  have hdv : bcc_wallCfg ∈ dualVerticalCrossingEvent 0 2 0 2 := hsub hmem
-  rw [mem_dualVerticalCrossingEvent] at hdv
+  have hdv : bcc_wallCfg ∈ dualConfig ⁻¹' verticalCrossingEvent 0 2 0 2 := hsub hmem
+  rw [Set.mem_preimage, mem_verticalCrossingEvent] at hdv
   exact bcc_noV_wall hdv
 
 /-! ### The all-closed configuration and barrier routes -/
@@ -275,8 +280,8 @@ theorem bcc_dualConfig_bot (e : Sym2 (Site 2)) : dualConfig bcc_botCfg e = true 
 
 /-- The all-closed configuration has a vertical crossing of `rect 0 2 0 2` in its rotated dual
 (the column `x = 0`). -/
-theorem bcc_dualVert_botCfg : DualVerticalCrossing bcc_botCfg 0 2 0 2 := by
-  unfold DualVerticalCrossing VerticalCrossing
+theorem bcc_dualVert_botCfg : VerticalCrossing (dualConfig bcc_botCfg) 0 2 0 2 := by
+  unfold VerticalCrossing
   have hb : (![0,0] : Site 2) ∈ bottomSide 0 2 0 2 := by
     refine ⟨?_, by simp⟩; rw [mem_rect]; exact ⟨by simp, by simp, by simp, by simp⟩
   have ht : (![0,2] : Site 2) ∈ topSide 0 2 0 2 := by
@@ -309,7 +314,7 @@ def bcc_dualBottomReach (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ) : Set (Site
       ConnectedWithin 2 (dualConfig ω) (rect 0 n 0 n) ⟨x, bottomSide_subset _hx⟩ ⟨v, hv⟩}
 
 theorem bcc_dualVert_iff_reach_top (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ) :
-    DualVerticalCrossing ω 0 n 0 n ↔
+    VerticalCrossing (dualConfig ω) 0 n 0 n ↔
       ∃ y : Site 2, y ∈ topSide 0 n 0 n ∧ y ∈ bcc_dualBottomReach ω n := by
   constructor
   · rintro ⟨x, y, hxy⟩
@@ -352,7 +357,7 @@ theorem bcc_dualReach_boundary_primal_open (ω : ConfigSpace (Sym2 (Site 2))) (n
   simpa using hcl
 
 theorem bcc_topSide_notin_dualReach (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ)
-    (hno : ¬ DualVerticalCrossing ω 0 n 0 n) {y : Site 2} (hy : y ∈ topSide 0 n 0 n) :
+    (hno : ¬ VerticalCrossing (dualConfig ω) 0 n 0 n) {y : Site 2} (hy : y ∈ topSide 0 n 0 n) :
     y ∉ bcc_dualBottomReach ω n := by
   intro hyD
   exact hno ((bcc_dualVert_iff_reach_top ω n).mpr ⟨y, hy, hyD⟩)
@@ -360,7 +365,7 @@ theorem bcc_topSide_notin_dualReach (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ)
 /-- Without a vertical crossing in `dualConfig ω`, deleting the edge boundary of the dual
 bottom-reach set disconnects the bottom side from the top side. -/
 theorem bcc_dualReach_separates (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ)
-    (hno : ¬ DualVerticalCrossing ω 0 n 0 n)
+    (hno : ¬ VerticalCrossing (dualConfig ω) 0 n 0 n)
     {x y : Site 2} (hx : x ∈ bottomSide 0 n 0 n) (hy : y ∈ topSide 0 n 0 n) :
     ¬ (latticeMinusBarrier (bcc_dualBottomReach ω n)).Reachable x y :=
   not_reachable_latticeMinusBarrier (bcc_dualBottomReach ω n)

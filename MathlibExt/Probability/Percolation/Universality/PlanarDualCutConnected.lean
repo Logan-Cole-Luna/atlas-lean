@@ -176,7 +176,7 @@ theorem pdc_DualCutConnectsRot_of_primalConnects (ω : ConfigSpace (Sym2 (Site 2
 theorem pdc_rotatedDualVerticalCrossing_of_primalConnects
     (ω : ConfigSpace (Sym2 (Site 2))) (n : ℤ)
     (h : pdc_PrimalBarrierConnects ω n) :
-    DualVerticalCrossing ω (-n) 0 0 n :=
+    VerticalCrossing (dualConfig ω) (-n) 0 0 n :=
   dcp_rotatedDualVerticalCrossing_of_cutConnectsRot ω n
     (pdc_DualCutConnectsRot_of_primalConnects ω n h)
 

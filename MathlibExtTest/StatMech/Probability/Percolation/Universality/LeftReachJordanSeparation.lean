@@ -36,6 +36,6 @@ example : ∃ (u : Site 2) (cyc : (faceBoundaryGraph (bcd_leftReach bcc_wallCfg 
 example : (edgeBoundary 2 (bcd_leftReach bcc_wallCfg 2)).Nonempty :=
   jex_edgeBoundary_nonempty bcc_wallCfg (by norm_num) bcc_noH_wall (c := 1) (by norm_num) (by norm_num)
 
-example : DualVerticalCrossing bcc_botCfg 0 2 0 2 := bcc_dualVert_botCfg
+example : VerticalCrossing (dualConfig bcc_botCfg) 0 2 0 2 := bcc_dualVert_botCfg
 
 end MathlibExtTest.StatMech.Probability.Percolation.Universality.LeftReachJordanSeparation

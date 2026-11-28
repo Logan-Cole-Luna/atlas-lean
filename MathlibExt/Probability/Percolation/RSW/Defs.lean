@@ -339,8 +339,8 @@ private theorem faceRegion_openSubgraph_induce_reachable_iff (ω : ConfigSpace (
   rw [SimpleGraph.reachable_iff_reflTransGen, hsteps]
 
 /-- **Dual left–right crossing steps.** A dual left–right crossing is a sequence of adjacent
-faces in the rectangle, from the left side to the right side, with each crossed primal edge
-closed. -/
+faces whose lower-left corners lie in the rectangle, from a face with its corner on the left side
+to a face with its corner on the right side, with each crossed primal edge closed. -/
 theorem dualHorizontalCrossing_iff (ω : ConfigSpace (Sym2 (Site 2))) (a b c d : ℤ) :
     DualHorizontalCrossing ω a b c d ↔
       ∃ (x : leftSide a b c d) (y : rightSide a b c d),
@@ -350,8 +350,8 @@ theorem dualHorizontalCrossing_iff (ω : ConfigSpace (Sym2 (Site 2))) (a b c d :
   simp only [DualHorizontalCrossing, faceRegion_openSubgraph_induce_reachable_iff]
 
 /-- **Dual bottom–top crossing steps.** A dual bottom–top crossing is a sequence of adjacent
-faces in the rectangle, from the bottom side to the top side, with each crossed primal edge
-closed. -/
+faces whose lower-left corners lie in the rectangle, from a face with its corner on the bottom
+side to a face with its corner on the top side, with each crossed primal edge closed. -/
 theorem dualVerticalCrossing_iff (ω : ConfigSpace (Sym2 (Site 2))) (a b c d : ℤ) :
     DualVerticalCrossing ω a b c d ↔
       ∃ (x : bottomSide a b c d) (y : topSide a b c d),

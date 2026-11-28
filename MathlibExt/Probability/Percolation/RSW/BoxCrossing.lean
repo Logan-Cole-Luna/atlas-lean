@@ -21,12 +21,13 @@ configurations of `ℤ²`, each stated with its geometric or correlation input a
   half-crossings meeting at a common point of the middle column, each of probability `≥ 1/2`.
 
 No square-crossing bound from self-duality is claimed here. The library's `dualConfig`
-labels dual edges by a quarter turn about the origin, so `dualVerticalCrossingEvent` on the
-unchanged box is not the geometric dual separator of `[0, n]²`: the complement inclusion
-fails for `n ≥ 2` (`StatMech.Universality.bcc_dichotomy_false`). A correct self-duality bound
-would need the dual crossing of the correctly shifted geometric dual rectangle (or a
-face-dual graph) and a proof of the complement inclusion; that is not formalized here, and
-no theorem in this module is stated in terms of the rotated dual event.
+labels dual edges by a quarter turn about the origin, so the crossing
+`VerticalCrossing (dualConfig ω)` of the unchanged box is not the geometric dual separator of
+`[0, n]²`: the complement inclusion fails for `n ≥ 2`
+(`StatMech.Universality.bcc_dichotomy_false`). A self-duality bound would instead use the
+bottom–top crossing `dualVerticalCrossingEvent` on the shifted dual lattice, or a face-dual
+crossing, together with a proof of the complement inclusion. That inclusion is not formalized
+here, and no theorem in this module is stated in terms of a dual crossing event.
 
 No RSW inequality is proved here: the hypotheses `hrouteLeft`, `hrouteRight` of
 `box_crossing_lower_bound` (half-crossing probabilities at least `1/2`) carry the content of the

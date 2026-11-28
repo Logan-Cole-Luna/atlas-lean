@@ -207,11 +207,11 @@ theorem pmd_wall_noH_yet_faceDualV :
   ⟨bcc_noH_wall, pmd_wall_faceDualVCrossing⟩
 
 /-- On the wall configuration there is no horizontal crossing of `[0, 2]²`, the two vertex-frame
-dual events `DualVerticalCrossing ω 0 2 0 2` and `dcp_DualCutConnectsRot ω 2` fail, and the
-face-dual vertical crossing holds. -/
+dual events `VerticalCrossing (dualConfig ω) 0 2 0 2` and `dcp_DualCutConnectsRot ω 2` fail, and
+the face-dual vertical crossing holds. -/
 theorem pmd_wall_only_face_frame_works :
     ¬ HorizontalCrossing bcc_wallCfg 0 2 0 2 ∧
-      ¬ DualVerticalCrossing bcc_wallCfg 0 2 0 2 ∧
+      ¬ VerticalCrossing (dualConfig bcc_wallCfg) 0 2 0 2 ∧
       ¬ dcp_DualCutConnectsRot bcc_wallCfg 2 ∧
       pmd_FaceDualVCrossing bcc_wallCfg 2 :=
   ⟨bcc_noH_wall, bcc_noV_wall, rdv_rotResidue_false_on_noH, pmd_wall_faceDualVCrossing⟩
