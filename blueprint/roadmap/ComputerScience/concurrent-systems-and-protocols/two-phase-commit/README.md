@@ -28,6 +28,7 @@
 - [Reachable states of two-phase commit with crashes](crash-reachable.md)
 - [Atomic commitment and blocking of two-phase commit](atomic-commitment-and-blocking-of-two-phase.md)
 - [Blocking of atomic commitment protocols](blocking-of-atomic-commitment-protocols.md)
+- [Atomic Commitment and Termination Detection](atomic-commitment-and-termination-detection/README.md)
 
 ## Related topics
 
