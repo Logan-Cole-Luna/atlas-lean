@@ -17,16 +17,18 @@ import Mathlib.Analysis.Asymptotics.Lemmas
 
 * A subset-sum query on a database of three bits, and the empty query.
 * Exact answers have distortion `0`, and a distortion bound can be weakened.
-* For a deterministic mechanism, a point mass `diracProba` at each output, `BlatantlyNonPrivate`
-  says that the adversary's candidate differs from the database in `o(n)` entries,
-  `‖c - d‖₀ ∈ o(n)`.
-* A mechanism whose answers have distortion below `1 / 2` with probability one is blatantly
-  non-private, by rounding the answers to the singleton queries; so is the mechanism that
-  releases the exact answers, and the one that releases the database.
+* For a deterministic mechanism, a point mass `diracProba` at each output, when every output
+  singleton is measurable, `BlatantlyNonPrivate` says that the adversary's candidate differs from
+  the database in `o(n)` entries, `‖c - d‖₀ ∈ o(n)`.
+* A common `E < 1 / 2` bounding the distortion of the answers almost surely on every database
+  implies blatant non-privacy, by rounding the answers to the singleton queries.
+* Each of the mechanisms that release the exact answers, the database, or its complement is
+  blatantly non-private.
 * The mechanism that answers `0` to every query is not blatantly non-private.
-* The mechanism that releases the database or its complement, each with probability `1 / 2`, is
-  not blatantly non-private, although each of the two deterministic mechanisms it mixes is: the
-  definition depends on the mechanism's randomness, not only on its possible outputs.
+* The mechanism that keeps the database or flips all its bits, choosing each branch with
+  probability `1 / 2`, is not blatantly non-private, although each of the two deterministic
+  mechanisms it mixes is: the definition depends on the mechanism's randomness, not only on its
+  possible outputs.
 -/
 
 @[expose] public section
@@ -56,9 +58,10 @@ theorem subsetSumQuery_singleton {n : ℕ} (d : Fin n → Bool) (i : Fin n) :
     subsetSumQuery d {i} = (d i).toNat := by
   simp [subsetSumQuery]
 
-/-- **Deterministic mechanisms.** For a mechanism that releases `f n d` on the database `d`,
-blatant non-privacy says that some adversary's candidate differs from every family of databases
-in `o(n)` entries, as in Definition 8.1 of Dwork and Roth. -/
+/-- **Deterministic mechanisms.** For a mechanism that releases `f n d` on the database `d`, when
+every output singleton is measurable, blatant non-privacy says that some adversary's candidate
+differs from every family of databases in `o(n)` entries, as in Definition 8.1 of Dwork and
+Roth. -/
 theorem blatantlyNonPrivate_diracProba_iff {Ω : ℕ → Type*} [∀ n, MeasurableSpace (Ω n)]
     [∀ n, MeasurableSingletonClass (Ω n)] (f : ∀ n, (Fin n → Bool) → Ω n) :
     BlatantlyNonPrivate (fun n d ↦ diracProba (f n d)) ↔
@@ -83,9 +86,9 @@ theorem blatantlyNonPrivate_diracProba_iff {Ω : ℕ → Type*} [∀ n, Measurab
     exact (Set.indicator_of_notMem (show f n (d n) ∉ {ω | ε * n < hammingDist (A n ω) (d n)}
       from not_lt.mpr hn) _).symm
 
-/-- **Distortion below `1 / 2` gives blatant non-privacy.** If, on every database, the answers
-have distortion at most `E < 1 / 2` with probability one, rounding the answers to the singleton
-queries reconstructs the database exactly. -/
+/-- **A distortion bound below `1 / 2` gives blatant non-privacy.** A common `E < 1 / 2` bounding
+the distortion of the answers almost surely on every database implies blatant non-privacy:
+rounding the answers to the singleton queries recovers the database exactly almost surely. -/
 theorem blatantlyNonPrivate_of_hasDistortion_lt_half
     (M : ∀ n, (Fin n → Bool) → ProbabilityMeasure (Finset (Fin n) → ℝ)) {E : ℝ} (hE : E < 1 / 2)
     (hM : ∀ n d, (M n d : Measure (Finset (Fin n) → ℝ)) {r | ¬ HasDistortion d r E} = 0) :
@@ -144,14 +147,14 @@ example : BlatantlyNonPrivate fun n (d : Fin n → Bool) ↦ diracProba fun i �
     ⟨fun _ c i ↦ !c i, fun d ↦ ?_⟩
   simp
 
-/-- **Randomized response on the whole database.** The law of the output that is `d` or its
-complement, each with probability `1 / 2`. -/
+/-- **Randomized response on the whole database.** The law of the output that keeps `d` or flips
+all its bits, choosing each branch with probability `1 / 2`. -/
 noncomputable def keepOrFlip {n : ℕ} (d : Fin n → Bool) : ProbabilityMeasure (Fin n → Bool) :=
   ⟨(2⁻¹ : ℝ≥0∞) • Measure.dirac d + (2⁻¹ : ℝ≥0∞) • Measure.dirac fun i ↦ !d i,
     ⟨by simp [ENNReal.inv_two_add_inv_two]⟩⟩
 
-/-- `keepOrFlip d` gives an event probability `1 / 2` for each of `d` and its complement that the
-event contains. -/
+/-- The probability of an event under `keepOrFlip d` adds `1 / 2` if the event contains `d` and
+`1 / 2` if it contains the complement of `d`. -/
 theorem keepOrFlip_apply {n : ℕ} (d : Fin n → Bool) (S : Set (Fin n → Bool)) :
     (keepOrFlip d S : ℝ) =
       S.indicator (fun _ ↦ 1 / 2) d + S.indicator (fun _ ↦ 1 / 2) fun i ↦ !d i := by
@@ -161,7 +164,7 @@ theorem keepOrFlip_apply {n : ℕ} (d : Fin n → Bool) (S : Set (Fin n → Bool
   by_cases h₁ : d ∈ S <;> by_cases h₂ : (fun i ↦ !d i) ∈ S <;>
     simp [h₁, h₂, ENNReal.inv_two_add_inv_two, ENNReal.toNNReal_ofNat, half]
 
-/-- A candidate is within `n / 4` of at most one of the all-`false` and the all-`true`
+/-- For `n ≥ 1`, a candidate is within `n / 4` of at most one of the all-`false` and the all-`true`
 databases, as its distances to the two add up to `n`. -/
 theorem quarter_lt_hammingDist {n : ℕ} (hn : 1 ≤ n) (c : Fin n → Bool) :
     (1 / 4 : ℝ) * n < hammingDist c (fun _ ↦ false) ∨
@@ -175,8 +178,9 @@ theorem quarter_lt_hammingDist {n : ℕ} (hn : 1 ≤ n) (c : Fin n → Bool) :
   by_contra! h
   linarith [h.1, h.2]
 
-/-- The mechanism `keepOrFlip` is not blatantly non-private: for each `n ≥ 1`, on the all-`false`
-database or on the all-`true` one, every adversary fails with probability at least `1 / 2`. -/
+/-- The mechanism `keepOrFlip` is not blatantly non-private: for every adversary and every
+`n ≥ 1`, one of the all-`false` and the all-`true` databases gives probability at least `1 / 2`
+of more than `n / 4` errors. -/
 example : ¬ BlatantlyNonPrivate fun n (d : Fin n → Bool) ↦ keepOrFlip d := by
   classical
   rintro ⟨A, hA⟩
